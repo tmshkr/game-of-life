@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { create2DMatrix, getNextGen } from "../utils/matrix";
+import { cloneDeep } from "lodash";
 import "./Board.scss";
 
 function Board(props) {
@@ -8,13 +9,13 @@ function Board(props) {
   const [matrix, setMatrix] = useState(create2DMatrix(rows, cols));
   const [isRunning, setRunning] = useState(false);
   const intervalRef = useRef(null);
-  const nextGenRef = useRef(matrix);
+  const nextGenRef = useRef(create2DMatrix(rows, cols));
 
   const handleClick = (e) => {
     if (isRunning) setRunning(false);
     const { i, j } = e.target.dataset;
-    e.target.classList.toggle("alive");
     nextGenRef.current[i][j] = nextGenRef.current[i][j] ? 0 : 1;
+    setMatrix(cloneDeep(nextGenRef.current));
   };
 
   const handlekeyup = (e) => {
@@ -31,7 +32,7 @@ function Board(props) {
   };
 
   const renderNextGen = () => {
-    setMatrix(nextGenRef.current);
+    setMatrix(cloneDeep(nextGenRef.current));
     nextGenRef.current = getNextGen(nextGenRef.current);
   };
 
@@ -39,22 +40,26 @@ function Board(props) {
     window.onkeyup = handlekeyup;
   }, [isRunning]);
 
+  const cells = matrix.map((row, i) =>
+    row.map((cell, j) => (
+      <span
+        key={[i, j]}
+        className={cell === 1 ? "alive" : ""}
+        data-i={i}
+        data-j={j}
+      />
+    ))
+  );
+
+  console.log("Board render", Date.now());
+
   return (
     <div
       id="board"
       style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
       onClick={handleClick}
     >
-      {matrix.map((row, i) =>
-        row.map((cell, j) => (
-          <span
-            key={`${i},${j}`}
-            className={cell ? "alive" : ""}
-            data-i={i}
-            data-j={j}
-          />
-        ))
-      )}
+      {cells}
     </div>
   );
 }
