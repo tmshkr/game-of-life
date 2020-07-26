@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { create2DMatrix } from "../utils/matrix";
+import { create2DMatrix, getNextGen } from "../utils/matrix";
 import "./Board.scss";
 
 function Board(props) {
@@ -7,15 +7,37 @@ function Board(props) {
   const [cols, setCols] = useState(Math.floor(window.innerWidth / 20));
   const [matrix, setMatrix] = useState(create2DMatrix(rows, cols));
   const [isRunning, setRunning] = useState(false);
-  console.log("render");
+  const intervalRef = useRef(null);
+  const nextGenRef = useRef(matrix);
 
   const handleClick = (e) => {
     if (isRunning) setRunning(false);
     const { i, j } = e.target.dataset;
     e.target.classList.toggle("alive");
-    matrix[i][j] = matrix[i][j] ? 0 : 1;
-    console.log(matrix);
+    nextGenRef.current[i][j] = nextGenRef.current[i][j] ? 0 : 1;
   };
+
+  const handlekeyup = (e) => {
+    if (e.which === 32) {
+      console.log(intervalRef.current);
+      if (!intervalRef.current) {
+        nextGenRef.current = getNextGen(nextGenRef.current);
+        intervalRef.current = setInterval(renderNextGen, 500);
+      } else {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    }
+  };
+
+  const renderNextGen = () => {
+    setMatrix(nextGenRef.current);
+    nextGenRef.current = getNextGen(nextGenRef.current);
+  };
+
+  useEffect(() => {
+    window.onkeyup = handlekeyup;
+  }, [isRunning]);
 
   return (
     <div
