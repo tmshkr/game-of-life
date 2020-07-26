@@ -3,6 +3,12 @@
   width: 100vw;
   display: grid;
   span {
-    outline: 1px solid #555;
+    border: 1px solid #555;
+    // box-shadow: inset 1px 1px 0 #555;
+    &.alive {
+      background-color: #17b0cd;
+      //   border: inset 1px solid cyan;
+      box-shadow: inset 1px 1px 0 0 #118197;
+    }
   }
 }
