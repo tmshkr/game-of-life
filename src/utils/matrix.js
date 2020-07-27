@@ -1,7 +1,8 @@
-export function create2DMatrix(numRows, numCols) {
+export function create2DMatrix(numRows, numCols, fill = true) {
   const matrix = new Array(numRows);
   for (let i = 0; i < numRows; i++) {
-    matrix[i] = new Array(numCols).fill(0);
+    matrix[i] = new Array(numCols);
+    if (fill) matrix[i].fill(0);
   }
   return matrix;
 }
@@ -9,7 +10,7 @@ export function create2DMatrix(numRows, numCols) {
 // receives a 2D matrix (m)
 // and returns the next generation
 export function getNextGen(m) {
-  const output = create2DMatrix(m.length, m[0].length);
+  const output = create2DMatrix(m.length, m[0].length, false);
   for (let i = 0; i < m.length; i++) {
     for (let j = 0; j < m[i].length; j++) {
       // count the neighbors
