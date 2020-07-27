@@ -4,6 +4,7 @@ import { debounce } from "lodash";
 import "./Board.scss";
 
 function Board(props) {
+  const { mousetrap } = props;
   const [rows, setRows] = useState(Math.floor(window.innerHeight / 20));
   const [cols, setCols] = useState(Math.floor(window.innerWidth / 20));
   const [matrix, setMatrix] = useState(create2DMatrix(rows, cols));
@@ -17,20 +18,6 @@ function Board(props) {
     if (!(i && j)) return;
     nextGenRef.current[i][j] = nextGenRef.current[i][j] ? 0 : 1;
     setMatrix(clone(nextGenRef.current));
-  };
-
-  const handlekeyup = (e) => {
-    if (e.which === 32) {
-      console.log(intervalRef.current);
-      if (!intervalRef.current) {
-        intervalRef.current = setInterval(renderNextGen, 500);
-        setRunning(true);
-      } else {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-        setRunning(false);
-      }
-    }
   };
 
   const renderNextGen = () => {
@@ -51,8 +38,19 @@ function Board(props) {
   };
 
   useEffect(() => {
-    window.onkeyup = handlekeyup;
     window.onresize = debounce(handleresize, 500);
+    mousetrap.bind("space", function (e) {
+      console.log(intervalRef.current);
+      console.log(e);
+      if (!intervalRef.current) {
+        intervalRef.current = setInterval(renderNextGen, 500);
+        setRunning(true);
+      } else {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+        setRunning(false);
+      }
+    });
   }, []);
 
   //   console.log("Board render", Date.now());
