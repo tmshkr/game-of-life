@@ -23,9 +23,11 @@ function Board(props) {
       console.log(intervalRef.current);
       if (!intervalRef.current) {
         intervalRef.current = setInterval(renderNextGen, 500);
+        setRunning(true);
       } else {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
+        setRunning(false);
       }
     }
   };
@@ -37,7 +39,7 @@ function Board(props) {
 
   useEffect(() => {
     window.onkeyup = handlekeyup;
-  }, [isRunning]);
+  }, []);
 
   //   console.log("Board render", Date.now());
 
@@ -45,6 +47,7 @@ function Board(props) {
     <div
       id="board"
       style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
+      className={isRunning ? "active" : ""}
       onClick={handleClick}
     >
       {matrix.map((row, i) =>

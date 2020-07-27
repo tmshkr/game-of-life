@@ -2,12 +2,18 @@
   height: 100vh;
   width: 100vw;
   display: grid;
+  &.active {
+    span {
+      border: 1px solid #555;
+    }
+  }
   span {
-    border: 1px solid #555;
-    // box-shadow: inset 1px 1px 0 #555;
+    border: 1px solid #777;
+    // transition: background-color 0.33s;
+    // will-change: background-color;
+
     &.alive {
       background-color: #17b0cd;
-      //   border: inset 1px solid cyan;
       box-shadow: inset 1px 1px 0 0 #118197;
     }
   }
