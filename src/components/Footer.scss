@@ -1,0 +1,9 @@
+footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  background: linear-gradient(to top, #00000080, #80808000);
+  .hidden {
+    transform: translateY(100%);
+  }
+}
