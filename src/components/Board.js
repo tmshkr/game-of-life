@@ -12,8 +12,8 @@ function Board(props) {
   const nextGenRef = useRef(create2DMatrix(rows, cols));
 
   const handleClick = (e) => {
-    if (isRunning) setRunning(false);
     const { i, j } = e.target.dataset;
+    if (!(i && j)) return;
     nextGenRef.current[i][j] = nextGenRef.current[i][j] ? 0 : 1;
     setMatrix(cloneDeep(nextGenRef.current));
   };
@@ -23,7 +23,7 @@ function Board(props) {
       console.log(intervalRef.current);
       if (!intervalRef.current) {
         nextGenRef.current = getNextGen(nextGenRef.current);
-        intervalRef.current = setInterval(renderNextGen, 500);
+        intervalRef.current = setInterval(renderNextGen, 100);
       } else {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
@@ -32,7 +32,7 @@ function Board(props) {
   };
 
   const renderNextGen = () => {
-    setMatrix(cloneDeep(nextGenRef.current));
+    requestAnimationFrame(() => setMatrix(cloneDeep(nextGenRef.current)));
     nextGenRef.current = getNextGen(nextGenRef.current);
   };
 
@@ -40,18 +40,7 @@ function Board(props) {
     window.onkeyup = handlekeyup;
   }, [isRunning]);
 
-  const cells = matrix.map((row, i) =>
-    row.map((cell, j) => (
-      <span
-        key={[i, j]}
-        className={cell === 1 ? "alive" : ""}
-        data-i={i}
-        data-j={j}
-      />
-    ))
-  );
-
-  console.log("Board render", Date.now());
+  //   console.log("Board render", Date.now());
 
   return (
     <div
@@ -59,7 +48,16 @@ function Board(props) {
       style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
       onClick={handleClick}
     >
-      {cells}
+      {matrix.map((row, i) =>
+        row.map((cell, j) => (
+          <span
+            key={[i, j]}
+            className={cell === 1 ? "alive" : ""}
+            data-i={i}
+            data-j={j}
+          />
+        ))
+      )}
     </div>
   );
 }
