@@ -4,7 +4,7 @@ import { debounce } from "lodash";
 import "./Board.scss";
 
 function Board(props) {
-  const { mousetrap } = props;
+  const { Mousetrap } = props;
   const [rows, setRows] = useState(Math.floor(window.innerHeight / 20));
   const [cols, setCols] = useState(Math.floor(window.innerWidth / 20));
   const [matrix, setMatrix] = useState(create2DMatrix(rows, cols));
@@ -39,7 +39,7 @@ function Board(props) {
 
   useEffect(() => {
     window.onresize = debounce(handleresize, 500);
-    mousetrap.bind("space", function (e) {
+    Mousetrap.bind("space", function (e) {
       console.log(intervalRef.current);
       console.log(e);
       if (!intervalRef.current) {

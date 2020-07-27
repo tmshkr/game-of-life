@@ -1,8 +1,9 @@
 header {
   width: 100%;
   position: fixed;
+  transition: 0.33s;
   background: linear-gradient(to bottom, #00000080, #80808000);
-  .hidden {
+  &.hidden {
     transform: translateY(-100%);
   }
 }
