@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState, useRef } from "react";
+import React, { Component } from "react";
 import Mousetrap from "mousetrap";
 import Board from "./components/Board";
 import Header from "./components/Header";
@@ -18,9 +18,9 @@ class App extends Component {
     Mousetrap.bind(
       "esc",
       function () {
-        console.log("esc");
-        const { isMenuVisible } = this.state;
-        this.setState({ isMenuVisible: !isMenuVisible });
+        requestAnimationFrame(() =>
+          this.setState({ isMenuVisible: !this.state.isMenuVisible })
+        );
       }.bind(this),
       "keyup"
     );
@@ -32,7 +32,7 @@ class App extends Component {
       <div className="App">
         <Header isMenuVisible={isMenuVisible} genCount={genCount} />
         <Footer isMenuVisible={isMenuVisible} />
-        <Board Mousetrap={Mousetrap} app={this} />
+        <Board app={this} />
       </div>
     );
   }

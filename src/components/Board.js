@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState, memo } from "react";
+import Mousetrap from "mousetrap";
 import { create2DMatrix, getNextGen, clone, resize } from "../utils/matrix";
 import { debounce } from "lodash";
 import "./Board.scss";
 
 function Board(props) {
-  const { Mousetrap, app } = props;
+  const { app } = props;
   const [rows, setRows] = useState(Math.floor(window.innerHeight / 20));
   const [cols, setCols] = useState(Math.floor(window.innerWidth / 20));
   const [matrix, setMatrix] = useState(create2DMatrix(rows, cols));
