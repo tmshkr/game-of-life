@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { create2DMatrix, getNextGen } from "../utils/matrix";
-import { cloneDeep } from "lodash";
+import { create2DMatrix, getNextGen, clone } from "../utils/matrix";
+// import { cloneDeep } from "lodash";
 import "./Board.scss";
 
 function Board(props) {
@@ -15,7 +15,7 @@ function Board(props) {
     const { i, j } = e.target.dataset;
     if (!(i && j)) return;
     nextGenRef.current[i][j] = nextGenRef.current[i][j] ? 0 : 1;
-    setMatrix(cloneDeep(nextGenRef.current));
+    setMatrix(clone(nextGenRef.current));
   };
 
   const handlekeyup = (e) => {
@@ -32,7 +32,7 @@ function Board(props) {
   };
 
   const renderNextGen = () => {
-    requestAnimationFrame(() => setMatrix(cloneDeep(nextGenRef.current)));
+    requestAnimationFrame(() => setMatrix(clone(nextGenRef.current)));
     nextGenRef.current = getNextGen(nextGenRef.current);
   };
 

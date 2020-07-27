@@ -25,11 +25,22 @@ export function getNextGen(m) {
 
       // then determine whether the cell will
       // live, die, or regenerate
-      if (m[i][j] && [2, 3].includes(count)) output[i][j] = 1;
-      else if (!m[i][j] && count === 3) output[i][j] = 1;
+      if (m[i][j] && count === 2) output[i][j] = 1;
+      else if (count === 3) output[i][j] = 1;
       else output[i][j] = 0;
     }
   }
 
   return output;
+}
+
+export function clone(m) {
+  const clone = new Array(m.length);
+  for (let i = 0; i < m.length; i++) {
+    clone[i] = new Array(m[i].length);
+    for (let j = 0; j < m[i].length; j++) {
+      clone[i][j] = m[i][j];
+    }
+  }
+  return clone;
 }
