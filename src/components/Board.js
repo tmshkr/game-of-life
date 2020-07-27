@@ -22,8 +22,7 @@ function Board(props) {
     if (e.which === 32) {
       console.log(intervalRef.current);
       if (!intervalRef.current) {
-        nextGenRef.current = getNextGen(nextGenRef.current);
-        intervalRef.current = setInterval(renderNextGen, 100);
+        intervalRef.current = setInterval(renderNextGen, 500);
       } else {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
@@ -32,8 +31,8 @@ function Board(props) {
   };
 
   const renderNextGen = () => {
-    requestAnimationFrame(() => setMatrix(clone(nextGenRef.current)));
     nextGenRef.current = getNextGen(nextGenRef.current);
+    requestAnimationFrame(() => setMatrix(clone(nextGenRef.current)));
   };
 
   useEffect(() => {
