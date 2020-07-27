@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { create2DMatrix, getNextGen, clone } from "../utils/matrix";
-// import { cloneDeep } from "lodash";
+import { create2DMatrix, getNextGen, clone, resize } from "../utils/matrix";
+import { debounce } from "lodash";
 import "./Board.scss";
 
 function Board(props) {
@@ -37,8 +37,25 @@ function Board(props) {
     requestAnimationFrame(() => setMatrix(clone(nextGenRef.current)));
   };
 
+  const handleresize = (e) => {
+    console.log("handleresize");
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+      setRunning(false);
+    }
+
+    const rows = Math.floor(window.innerHeight / 20);
+    const cols = Math.floor(window.innerWidth / 20);
+    nextGenRef.current = resize(nextGenRef.current, rows, cols);
+    setMatrix(clone(nextGenRef.current));
+    setRows(rows);
+    setCols(cols);
+  };
+
   useEffect(() => {
     window.onkeyup = handlekeyup;
+    window.onresize = debounce(handleresize, 100);
   }, []);
 
   //   console.log("Board render", Date.now());

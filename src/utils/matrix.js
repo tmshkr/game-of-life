@@ -45,3 +45,16 @@ export function clone(m) {
   }
   return clone;
 }
+
+export function resize(m, numRows, numCols) {
+  const resized = new Array(numRows);
+  for (let i = 0; i < numRows; i++) {
+    resized[i] = new Array(numCols);
+    for (let j = 0; j < numCols; j++) {
+      if (i < m.length && j < m[i].length) {
+        resized[i][j] = m[i][j];
+      } else resized[i][j] = 0;
+    }
+  }
+  return resized;
+}
