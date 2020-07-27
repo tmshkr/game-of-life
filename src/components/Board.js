@@ -4,14 +4,13 @@ import { debounce } from "lodash";
 import "./Board.scss";
 
 function Board(props) {
-  const { Mousetrap } = props;
+  const { Mousetrap, incrementGen } = props;
   const [rows, setRows] = useState(Math.floor(window.innerHeight / 20));
   const [cols, setCols] = useState(Math.floor(window.innerWidth / 20));
   const [matrix, setMatrix] = useState(create2DMatrix(rows, cols));
   const [isRunning, setRunning] = useState(false);
   const intervalRef = useRef(null);
   const nextGenRef = useRef(create2DMatrix(rows, cols));
-  const genCountRef = useRef(0);
 
   const handleClick = (e) => {
     const { i, j } = e.target.dataset;
@@ -22,8 +21,7 @@ function Board(props) {
 
   const renderNextGen = () => {
     nextGenRef.current = getNextGen(nextGenRef.current);
-    genCountRef.current++;
-    console.log("Generation:", genCountRef.current);
+    // console.log("Generation:", genCountRef.current);
     requestAnimationFrame(() => setMatrix(clone(nextGenRef.current)));
   };
 
@@ -53,7 +51,7 @@ function Board(props) {
     });
   }, []);
 
-  //   console.log("Board render", Date.now());
+  console.log("Board render", Date.now());
 
   return (
     <div
