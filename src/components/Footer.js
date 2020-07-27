@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import "./Footer.scss";
 
 function Footer(props) {
@@ -10,4 +10,4 @@ function Footer(props) {
   );
 }
 
-export default Footer;
+export default memo(Footer);
