@@ -11,6 +11,8 @@ class App extends Component {
     this.state = {
       isMenuVisible: true,
       genCount: 0,
+      timeout: 500,
+      running: false,
     };
   }
 

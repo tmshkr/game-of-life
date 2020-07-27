@@ -9,8 +9,7 @@ function Board(props) {
   const [rows, setRows] = useState(Math.floor(window.innerHeight / 20));
   const [cols, setCols] = useState(Math.floor(window.innerWidth / 20));
   const [matrix, setMatrix] = useState(create2DMatrix(rows, cols));
-  const [isRunning, setRunning] = useState(false);
-  const intervalRef = useRef(null);
+  const timeoutRef = useRef(null);
   const nextGenRef = useRef(create2DMatrix(rows, cols));
 
   const handleClick = (e) => {
@@ -24,6 +23,7 @@ function Board(props) {
     nextGenRef.current = getNextGen(nextGenRef.current);
     app.setState({ genCount: app.state.genCount + 1 });
     requestAnimationFrame(() => setMatrix(clone(nextGenRef.current)));
+    timeoutRef.current = setTimeout(renderNextGen, app.state.timeout);
   };
 
   const handleresize = (e) => {
@@ -41,15 +41,14 @@ function Board(props) {
     Mousetrap.bind(
       "space",
       function (e) {
-        console.log(intervalRef.current);
-        console.log(e);
-        if (!intervalRef.current) {
-          intervalRef.current = setInterval(renderNextGen, 500);
-          setRunning(true);
+        console.log(timeoutRef.current);
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+          timeoutRef.current = null;
+          app.setState({ running: false });
         } else {
-          clearInterval(intervalRef.current);
-          intervalRef.current = null;
-          setRunning(false);
+          timeoutRef.current = setTimeout(renderNextGen, app.state.timeout);
+          app.setState({ running: true });
         }
       },
       "keyup"
@@ -62,7 +61,7 @@ function Board(props) {
     <div
       id="board"
       style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
-      className={isRunning ? "active" : ""}
+      className={app.state.running ? "active" : ""}
       onClick={handleClick}
     >
       {matrix.map((row, i) =>
