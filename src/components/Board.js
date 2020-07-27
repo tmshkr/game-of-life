@@ -10,6 +10,7 @@ function Board(props) {
   const [isRunning, setRunning] = useState(false);
   const intervalRef = useRef(null);
   const nextGenRef = useRef(create2DMatrix(rows, cols));
+  const genCountRef = useRef(0);
 
   const handleClick = (e) => {
     const { i, j } = e.target.dataset;
@@ -34,17 +35,13 @@ function Board(props) {
 
   const renderNextGen = () => {
     nextGenRef.current = getNextGen(nextGenRef.current);
+    genCountRef.current++;
+    console.log("Generation:", genCountRef.current);
     requestAnimationFrame(() => setMatrix(clone(nextGenRef.current)));
   };
 
   const handleresize = (e) => {
-    console.log("handleresize");
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-      setRunning(false);
-    }
-
+    console.log("handleresize", Date.now());
     const rows = Math.floor(window.innerHeight / 20);
     const cols = Math.floor(window.innerWidth / 20);
     nextGenRef.current = resize(nextGenRef.current, rows, cols);
@@ -55,7 +52,7 @@ function Board(props) {
 
   useEffect(() => {
     window.onkeyup = handlekeyup;
-    window.onresize = debounce(handleresize, 100);
+    window.onresize = debounce(handleresize, 500);
   }, []);
 
   //   console.log("Board render", Date.now());
