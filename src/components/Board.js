@@ -37,18 +37,22 @@ function Board(props) {
 
   useEffect(() => {
     window.onresize = debounce(handleresize, 500);
-    Mousetrap.bind("space", function (e) {
-      console.log(intervalRef.current);
-      console.log(e);
-      if (!intervalRef.current) {
-        intervalRef.current = setInterval(renderNextGen, 500);
-        setRunning(true);
-      } else {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-        setRunning(false);
-      }
-    });
+    Mousetrap.bind(
+      "space",
+      function (e) {
+        console.log(intervalRef.current);
+        console.log(e);
+        if (!intervalRef.current) {
+          intervalRef.current = setInterval(renderNextGen, 500);
+          setRunning(true);
+        } else {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+          setRunning(false);
+        }
+      },
+      "keyup"
+    );
   }, []);
 
   console.log("Board render", Date.now());

@@ -21,7 +21,8 @@ class App extends Component {
         console.log("esc");
         const { isMenuVisible } = this.state;
         this.setState({ isMenuVisible: !isMenuVisible });
-      }.bind(this)
+      }.bind(this),
+      "keyup"
     );
   }
 
