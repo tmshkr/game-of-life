@@ -31,7 +31,7 @@ class App extends Component {
       <div className="App">
         <Header isMenuVisible={isMenuVisible} genCount={genCount} />
         <Footer isMenuVisible={isMenuVisible} />
-        <Board Mousetrap={Mousetrap} />
+        <Board Mousetrap={Mousetrap} app={this} />
       </div>
     );
   }

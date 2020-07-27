@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, memo } from "react";
 import { create2DMatrix, getNextGen, clone, resize } from "../utils/matrix";
 import { debounce } from "lodash";
 import "./Board.scss";
 
 function Board(props) {
-  const { Mousetrap, incrementGen } = props;
+  const { Mousetrap, app } = props;
   const [rows, setRows] = useState(Math.floor(window.innerHeight / 20));
   const [cols, setCols] = useState(Math.floor(window.innerWidth / 20));
   const [matrix, setMatrix] = useState(create2DMatrix(rows, cols));
@@ -21,7 +21,7 @@ function Board(props) {
 
   const renderNextGen = () => {
     nextGenRef.current = getNextGen(nextGenRef.current);
-    // console.log("Generation:", genCountRef.current);
+    app.setState({ genCount: app.state.genCount + 1 });
     requestAnimationFrame(() => setMatrix(clone(nextGenRef.current)));
   };
 
@@ -74,4 +74,4 @@ function Board(props) {
   );
 }
 
-export default Board;
+export default memo(Board);
