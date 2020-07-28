@@ -6,13 +6,9 @@ import "./Footer.scss";
 
 function Footer(props) {
   const { app, isMenuVisible, running } = props;
+
   return (
-    <footer
-      className={isMenuVisible ? "" : "hidden"}
-      onClick={() => {
-        console.log("click");
-      }}
-    >
+    <footer className={isMenuVisible ? "" : "hidden"}>
       {running ? (
         <PauseButton onClick={app.toggleSimulation} />
       ) : (

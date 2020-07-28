@@ -75,7 +75,13 @@ class App extends Component {
   render() {
     const { interval, isMenuVisible, genCount, matrix, running } = this.state;
     return (
-      <div className="App">
+      <div
+        className="App"
+        onContextMenu={(e) => {
+          e.preventDefault();
+          this.toggleMenu();
+        }}
+      >
         <Header
           isMenuVisible={isMenuVisible}
           genCount={genCount}
