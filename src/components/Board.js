@@ -1,53 +1,47 @@
-import React, { useEffect, useRef, useState, memo } from "react";
+import React, { useEffect, memo } from "react";
 import Mousetrap from "mousetrap";
-import { create2DMatrix, getNextGen, clone, resize } from "../utils/matrix";
+import { getNextGen, clone, resize } from "../utils/matrix";
 import { debounce } from "lodash";
 import "./Board.scss";
 
 function Board(props) {
-  const { app } = props;
-  const [rows, setRows] = useState(Math.floor(window.innerHeight / 20));
-  const [cols, setCols] = useState(Math.floor(window.innerWidth / 20));
-  const [matrix, setMatrix] = useState(create2DMatrix(rows, cols));
-  const timeoutRef = useRef(null);
-  const nextGenRef = useRef(create2DMatrix(rows, cols));
+  const { app, running, matrix } = props;
 
   const handleClick = (e) => {
     const { i, j } = e.target.dataset;
     if (!(i && j)) return;
-    nextGenRef.current[i][j] = nextGenRef.current[i][j] ? 0 : 1;
-    setMatrix(clone(nextGenRef.current));
+    app.nextGen[i][j] = app.nextGen[i][j] ? 0 : 1;
+    app.setState({ matrix: clone(app.nextGen) });
   };
 
   const renderNextGen = () => {
-    nextGenRef.current = getNextGen(nextGenRef.current);
+    app.nextGen = getNextGen(app.nextGen);
     app.setState({ genCount: app.state.genCount + 1 });
-    requestAnimationFrame(() => setMatrix(clone(nextGenRef.current)));
-    timeoutRef.current = setTimeout(renderNextGen, app.state.timeout);
+    requestAnimationFrame(() => app.setState({ matrix: clone(app.nextGen) }));
+    app.state.timer = setTimeout(renderNextGen, app.state.interval);
   };
 
   const handleresize = (e) => {
     console.log("handleresize", Date.now());
     const rows = Math.floor(window.innerHeight / 20);
     const cols = Math.floor(window.innerWidth / 20);
-    nextGenRef.current = resize(nextGenRef.current, rows, cols);
-    setMatrix(clone(nextGenRef.current));
-    setRows(rows);
-    setCols(cols);
+    app.nextGen = resize(app.nextGen, rows, cols);
+    app.setState({ matrix: clone(app.nextGen) });
   };
 
   useEffect(() => {
     window.onresize = debounce(handleresize, 500);
+    app.start = renderNextGen;
     Mousetrap.bind(
       "space",
       function (e) {
-        console.log(timeoutRef.current);
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-          timeoutRef.current = null;
+        console.log(app.state.timer);
+        if (app.state.timer) {
+          clearTimeout(app.state.timer);
+          app.state.timer = null;
           app.setState({ running: false });
         } else {
-          timeoutRef.current = setTimeout(renderNextGen, app.state.timeout);
+          app.state.timer = setTimeout(app.start, app.state.timeout);
           app.setState({ running: true });
         }
       },
@@ -60,8 +54,8 @@ function Board(props) {
   return (
     <div
       id="board"
-      style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
-      className={app.state.running ? "active" : ""}
+      style={{ gridTemplateColumns: `repeat(${matrix[0].length}, 1fr)` }}
+      className={running ? "active" : ""}
       onClick={handleClick}
     >
       {matrix.map((row, i) =>

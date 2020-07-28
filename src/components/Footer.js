@@ -4,7 +4,12 @@ import "./Footer.scss";
 function Footer(props) {
   const { isMenuVisible } = props;
   return (
-    <footer className={isMenuVisible ? "" : "hidden"}>
+    <footer
+      className={isMenuVisible ? "" : "hidden"}
+      onClick={() => {
+        console.log("click");
+      }}
+    >
       <h1>Footer</h1>
     </footer>
   );
