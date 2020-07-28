@@ -14,7 +14,7 @@ class History {
     this.tail = node;
     this.current = node;
     this.length = 1;
-    this.limit = 100;
+    this.limit = 1000;
   }
 
   enqueue(matrix) {
@@ -27,10 +27,7 @@ class History {
     node.prev = oldHead;
     this.current = node;
     this.head = node;
-    this.length++;
-    if (this.length > this.limit) {
-      this.dequeue();
-    }
+    this.length < this.limit ? this.length++ : this.dequeue();
     return node;
   }
 
@@ -39,7 +36,6 @@ class History {
     oldTail.next.prev = null;
     this.tail = oldTail.next;
     oldTail.next = null;
-    this.length--;
     return oldTail;
   }
 
