@@ -27,39 +27,37 @@ class App extends Component {
 
   componentDidMount() {
     const app = this;
-    Mousetrap.bind(
-      "space",
-      function (e) {
-        console.log(app.timer);
-        if (app.timer) {
-          clearTimeout(app.timer);
-          app.timer = null;
-          app.setState({ running: false });
-        } else {
-          app.timer = setTimeout(app.renderNextGen, app.state.timeout);
-          app.setState({ running: true });
-        }
-      },
-      "keyup"
-    );
-
-    Mousetrap.bind(
-      "esc",
-      function () {
-        requestAnimationFrame(() =>
-          app.setState({ isMenuVisible: !app.state.isMenuVisible })
-        );
-      },
-      "keyup"
-    );
+    Mousetrap.bind("space", app.toggleSimulation, "keyup");
+    Mousetrap.bind("esc", app.toggleMenu, "keyup");
   }
+
+  toggleMenu = () => {
+    const app = this;
+    requestAnimationFrame(() =>
+      app.setState({ isMenuVisible: !app.state.isMenuVisible })
+    );
+  };
+
+  toggleSimulation = () => {
+    const app = this;
+    if (app.timer) {
+      clearTimeout(app.timer);
+      app.timer = null;
+      app.setState({ running: false });
+    } else {
+      app.timer = setTimeout(app.renderNextGen, app.state.interval);
+      app.setState({ running: true });
+    }
+  };
 
   renderNextGen() {
     const app = this;
     app.nextGen = getNextGen(app.nextGen);
-    app.setState({ genCount: app.state.genCount + 1 });
     requestAnimationFrame(function () {
-      app.setState({ matrix: clone(app.nextGen) });
+      app.setState({
+        matrix: clone(app.nextGen),
+        genCount: app.state.genCount + 1,
+      });
     });
     app.timer = setTimeout(app.renderNextGen, app.state.interval);
   }
