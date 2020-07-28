@@ -12,6 +12,7 @@ class App extends Component {
     const rows = Math.floor(window.innerHeight / 20);
     const cols = Math.floor(window.innerWidth / 20);
     this.nextGen = create2DMatrix(rows, cols);
+    this.timer = null;
     this.state = {
       isMenuVisible: true,
       genCount: 0,
@@ -20,18 +21,47 @@ class App extends Component {
       running: false,
       matrix: create2DMatrix(rows, cols),
     };
+
+    this.renderNextGen = this.renderNextGen.bind(this);
   }
 
   componentDidMount() {
+    const app = this;
+    Mousetrap.bind(
+      "space",
+      function (e) {
+        console.log(app.timer);
+        if (app.timer) {
+          clearTimeout(app.timer);
+          app.timer = null;
+          app.setState({ running: false });
+        } else {
+          app.timer = setTimeout(app.renderNextGen, app.state.timeout);
+          app.setState({ running: true });
+        }
+      },
+      "keyup"
+    );
+
     Mousetrap.bind(
       "esc",
       function () {
         requestAnimationFrame(() =>
-          this.setState({ isMenuVisible: !this.state.isMenuVisible })
+          app.setState({ isMenuVisible: !app.state.isMenuVisible })
         );
-      }.bind(this),
+      },
       "keyup"
     );
+  }
+
+  renderNextGen() {
+    const app = this;
+    app.nextGen = getNextGen(app.nextGen);
+    app.setState({ genCount: app.state.genCount + 1 });
+    requestAnimationFrame(function () {
+      app.setState({ matrix: clone(app.nextGen) });
+    });
+    app.timer = setTimeout(app.renderNextGen, app.state.interval);
   }
 
   render() {
