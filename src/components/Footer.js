@@ -15,13 +15,13 @@ function Footer(props) {
     <footer className={isMenuVisible ? "" : "hidden"}>
       <HelpButton />
       <div className="controls">
-        <BackButton />
+        <BackButton onClick={app.stepBackward} />
         {running ? (
           <PauseButton onClick={app.toggleSimulation} />
         ) : (
           <PlayButton onClick={app.toggleSimulation} />
         )}
-        <ForwardButton />
+        <ForwardButton onClick={app.stepForward} />
       </div>
       <GitHub
         onClick={() =>

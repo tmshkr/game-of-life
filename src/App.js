@@ -30,7 +30,8 @@ class App extends Component {
     Mousetrap.bind("esc", app.toggleMenu, "keyup");
     Mousetrap.bind("up", app.increaseInterval);
     Mousetrap.bind("down", app.decreaseInterval);
-    Mousetrap.bind("left", app.stepBackward, "keyup");
+    Mousetrap.bind("left", app.stepBackward);
+    Mousetrap.bind("right", app.stepForward);
   }
 
   toggleMenu = () => {
@@ -68,13 +69,21 @@ class App extends Component {
   stepBackward = () => {
     if (this.state.genCount > 0) {
       if (this.timer) this.stop();
-      // const prevGen = this.state.genCount - 1;
       this.history.goBack();
       this.setState({
         matrix: this.history.current.matrix,
         genCount: this.history.current.gen,
       });
     }
+  };
+
+  stepForward = () => {
+    if (this.timer) this.stop();
+    this.history.goForward();
+    this.setState({
+      matrix: this.history.current.matrix,
+      genCount: this.history.current.gen,
+    });
   };
 
   renderNextGen = () => {
