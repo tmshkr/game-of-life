@@ -45,6 +45,8 @@ class History {
 
   replace(matrix) {
     this.current.matrix = matrix;
+    this.current.next = null;
+    this.head = this.current;
     return this.current;
   }
 

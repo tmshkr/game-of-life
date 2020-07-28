@@ -9,8 +9,9 @@ function Board(props) {
   const handleClick = (e) => {
     const { i, j } = e.target.dataset;
     if (!(i && j)) return;
-    app.nextGen[i][j] = app.nextGen[i][j] ? 0 : 1;
-    app.history.replace(clone(app.nextGen));
+    const newMatrix = clone(app.history.current.matrix);
+    newMatrix[i][j] = newMatrix[i][j] ? 0 : 1;
+    app.history.replace(newMatrix);
     app.setState({ matrix: app.history.current.matrix });
   };
 

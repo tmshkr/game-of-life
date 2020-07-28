@@ -12,7 +12,6 @@ class App extends Component {
     super(props);
     const rows = Math.floor(window.innerHeight / 20);
     const cols = Math.floor(window.innerWidth / 20);
-    this.nextGen = create2DMatrix(rows, cols);
     this.timer = null;
     this.history = new History(create2DMatrix(rows, cols));
     this.state = {
@@ -88,8 +87,12 @@ class App extends Component {
 
   renderNextGen = () => {
     const app = this;
-    app.nextGen = getNextGen(app.nextGen);
-    app.history.enqueue(clone(app.nextGen));
+    if (app.history.current.next) {
+      app.history.goForward();
+    } else {
+      const nextMatrix = getNextGen(app.history.current.matrix);
+      app.history.enqueue(nextMatrix);
+    }
     requestAnimationFrame(function () {
       app.setState({
         matrix: app.history.current.matrix,
