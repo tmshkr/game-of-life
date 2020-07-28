@@ -43,6 +43,7 @@ class History {
     this.current.matrix = matrix;
     this.current.next = null;
     this.head = this.current;
+    this.length = this.current.gen - this.tail.gen + 1;
     return this.current;
   }
 
