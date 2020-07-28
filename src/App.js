@@ -20,7 +20,7 @@ class App extends Component {
       genCount: 0,
       interval: 500,
       running: false,
-      matrix: create2DMatrix(rows, cols),
+      matrix: this.history.current.matrix,
     };
   }
 
