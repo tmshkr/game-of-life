@@ -14,8 +14,6 @@ function Board(props) {
     app.setState({ matrix: app.history.current.matrix });
   };
 
-  console.log("Board render", Date.now());
-
   return (
     <div
       id="board"
