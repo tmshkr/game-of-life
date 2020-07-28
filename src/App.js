@@ -21,14 +21,14 @@ class App extends Component {
       running: false,
       matrix: create2DMatrix(rows, cols),
     };
-
-    this.renderNextGen = this.renderNextGen.bind(this);
   }
 
   componentDidMount() {
     const app = this;
     Mousetrap.bind("space", app.toggleSimulation, "keyup");
     Mousetrap.bind("esc", app.toggleMenu, "keyup");
+    Mousetrap.bind("up", app.increaseInterval);
+    Mousetrap.bind("down", app.decreaseInterval);
   }
 
   toggleMenu = () => {
@@ -36,6 +36,16 @@ class App extends Component {
     requestAnimationFrame(() =>
       app.setState({ isMenuVisible: !app.state.isMenuVisible })
     );
+  };
+
+  increaseInterval = () => {
+    if (this.state.interval < 1000)
+      this.setState({ interval: this.state.interval + 10 });
+  };
+
+  decreaseInterval = () => {
+    if (this.state.interval > 50)
+      this.setState({ interval: this.state.interval - 10 });
   };
 
   toggleSimulation = () => {
@@ -50,7 +60,7 @@ class App extends Component {
     }
   };
 
-  renderNextGen() {
+  renderNextGen = () => {
     const app = this;
     app.nextGen = getNextGen(app.nextGen);
     requestAnimationFrame(function () {
@@ -60,13 +70,17 @@ class App extends Component {
       });
     });
     app.timer = setTimeout(app.renderNextGen, app.state.interval);
-  }
+  };
 
   render() {
-    const { isMenuVisible, genCount, matrix, running } = this.state;
+    const { interval, isMenuVisible, genCount, matrix, running } = this.state;
     return (
       <div className="App">
-        <Header isMenuVisible={isMenuVisible} genCount={genCount} />
+        <Header
+          isMenuVisible={isMenuVisible}
+          genCount={genCount}
+          interval={interval}
+        />
         <Footer isMenuVisible={isMenuVisible} />
         <Board app={this} matrix={matrix} running={running} />
       </div>

@@ -2,10 +2,11 @@ import React, { memo } from "react";
 import "./Header.scss";
 
 function Header(props) {
-  const { isMenuVisible, genCount } = props;
+  const { interval, isMenuVisible, genCount } = props;
   return (
     <header className={isMenuVisible ? "" : "hidden"}>
-      <h1>{`Generation: ${genCount}`}</h1>
+      <h4>{`Generation: ${genCount}`}</h4>
+      <h4>{`Interval: ${interval}ms`}</h4>
     </header>
   );
 }
