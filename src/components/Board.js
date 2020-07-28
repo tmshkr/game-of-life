@@ -1,6 +1,5 @@
-import React, { useEffect, memo } from "react";
-import { clone, resize } from "../utils/matrix";
-import { debounce } from "lodash";
+import React, { memo } from "react";
+import { clone } from "../utils/matrix";
 import "./Board.scss";
 
 function Board(props) {
@@ -14,17 +13,6 @@ function Board(props) {
     app.history.replace(newMatrix);
     app.setState({ matrix: app.history.current.matrix });
   };
-
-  const handleresize = (e) => {
-    const rows = Math.floor(window.innerHeight / 20);
-    const cols = Math.floor(window.innerWidth / 20);
-    app.nextGen = resize(app.nextGen, rows, cols);
-    app.setState({ matrix: clone(app.nextGen) });
-  };
-
-  useEffect(() => {
-    window.onresize = debounce(handleresize, 500);
-  }, []);
 
   console.log("Board render", Date.now());
 

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Mousetrap from "mousetrap";
+import { debounce } from "lodash";
 import { create2DMatrix, getNextGen, clone, resize } from "./utils/matrix";
 import History from "./utils/history";
 import Board from "./components/Board";
@@ -31,7 +32,21 @@ class App extends Component {
     Mousetrap.bind("down", app.decreaseInterval);
     Mousetrap.bind("left", app.stepBackward);
     Mousetrap.bind("right", app.stepForward);
+    Mousetrap.bind("?", function () {
+      console.log(app.history);
+    });
+
+    window.onresize = debounce(app.handleresize, 500);
   }
+
+  handleresize = (e) => {
+    const app = this;
+    const rows = Math.floor(window.innerHeight / 20);
+    const cols = Math.floor(window.innerWidth / 20);
+    const resized = resize(app.history.current.matrix, rows, cols);
+    app.history = new History(resized);
+    app.setState({ matrix: resized, genCount: 0 });
+  };
 
   toggleMenu = () => {
     const app = this;
