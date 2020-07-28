@@ -81,7 +81,7 @@ class App extends Component {
           genCount={genCount}
           interval={interval}
         />
-        <Footer isMenuVisible={isMenuVisible} />
+        <Footer app={this} isMenuVisible={isMenuVisible} running={running} />
         <Board app={this} matrix={matrix} running={running} />
       </div>
     );
