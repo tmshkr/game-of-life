@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Mousetrap from "mousetrap";
 import { create2DMatrix, getNextGen, clone, resize } from "./utils/matrix";
+import History from "./utils/history";
 import Board from "./components/Board";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -13,6 +14,7 @@ class App extends Component {
     const cols = Math.floor(window.innerWidth / 20);
     this.nextGen = create2DMatrix(rows, cols);
     this.timer = null;
+    this.history = new History(create2DMatrix(rows, cols));
     this.state = {
       isMenuVisible: true,
       genCount: 0,
@@ -28,6 +30,7 @@ class App extends Component {
     Mousetrap.bind("esc", app.toggleMenu, "keyup");
     Mousetrap.bind("up", app.increaseInterval);
     Mousetrap.bind("down", app.decreaseInterval);
+    Mousetrap.bind("left", app.stepBackward, "keyup");
   }
 
   toggleMenu = () => {
@@ -48,24 +51,40 @@ class App extends Component {
   };
 
   toggleSimulation = () => {
-    const app = this;
-    if (app.timer) {
-      clearTimeout(app.timer);
-      app.timer = null;
-      app.setState({ running: false });
-    } else {
-      app.timer = setTimeout(app.renderNextGen, app.state.interval);
-      app.setState({ running: true });
+    this.timer ? this.stop() : this.start();
+  };
+
+  start = () => {
+    this.renderNextGen();
+    this.setState({ running: true });
+  };
+
+  stop = () => {
+    clearTimeout(this.timer);
+    this.timer = null;
+    this.setState({ running: false });
+  };
+
+  stepBackward = () => {
+    if (this.state.genCount > 0) {
+      if (this.timer) this.stop();
+      // const prevGen = this.state.genCount - 1;
+      this.history.goBack();
+      this.setState({
+        matrix: this.history.current.matrix,
+        genCount: this.history.current.gen,
+      });
     }
   };
 
   renderNextGen = () => {
     const app = this;
     app.nextGen = getNextGen(app.nextGen);
+    app.history.enqueue(clone(app.nextGen));
     requestAnimationFrame(function () {
       app.setState({
-        matrix: clone(app.nextGen),
-        genCount: app.state.genCount + 1,
+        matrix: app.history.current.matrix,
+        genCount: app.history.current.gen,
       });
     });
     app.timer = setTimeout(app.renderNextGen, app.state.interval);

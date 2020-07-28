@@ -14,7 +14,7 @@ function Footer(props) {
   return (
     <footer className={isMenuVisible ? "" : "hidden"}>
       <HelpButton />
-      <div class="controls">
+      <div className="controls">
         <BackButton />
         {running ? (
           <PauseButton onClick={app.toggleSimulation} />

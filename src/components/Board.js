@@ -10,7 +10,8 @@ function Board(props) {
     const { i, j } = e.target.dataset;
     if (!(i && j)) return;
     app.nextGen[i][j] = app.nextGen[i][j] ? 0 : 1;
-    app.setState({ matrix: clone(app.nextGen) });
+    app.history.replace(clone(app.nextGen));
+    app.setState({ matrix: app.history.current.matrix });
   };
 
   const handleresize = (e) => {
