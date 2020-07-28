@@ -3,8 +3,9 @@ footer {
   position: fixed;
   bottom: 0;
   height: 5rem;
+  padding: 0 1rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   transition: 0.33s;
   background: linear-gradient(to top, #00000080, #80808000);
@@ -14,5 +15,10 @@ footer {
   svg {
     fill: #fff;
     height: 1.4rem;
+  }
+  .controls {
+    svg {
+      margin: 0 0.5rem;
+    }
   }
 }

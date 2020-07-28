@@ -17,7 +17,6 @@ class App extends Component {
       isMenuVisible: true,
       genCount: 0,
       interval: 500,
-      timer: null,
       running: false,
       matrix: create2DMatrix(rows, cols),
     };
