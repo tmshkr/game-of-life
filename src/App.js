@@ -154,6 +154,7 @@ class App extends Component {
       >
         <Help app={this} isHelpModalVisible={isHelpModalVisible} />
         <Header
+          app={this}
           isMenuVisible={isMenuVisible}
           genCount={genCount}
           interval={interval}

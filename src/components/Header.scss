@@ -5,8 +5,15 @@ header {
   background: linear-gradient(to bottom, #00000080, #80808000);
   display: flex;
   justify-content: space-between;
-  padding: 0 1rem;
+  padding: 1rem;
   &.hidden {
     transform: translateY(-100%);
+  }
+  label,
+  p {
+    display: inline-block;
+  }
+  p:first-child {
+    margin-left: 0.25rem;
   }
 }
