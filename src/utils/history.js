@@ -18,9 +18,6 @@ class History {
   }
 
   enqueue(matrix) {
-    if (this.current !== this.head) {
-      this.head = this.current;
-    }
     const node = new Node(matrix, this.current.gen + 1);
     const oldHead = this.head;
     oldHead.next = node;
