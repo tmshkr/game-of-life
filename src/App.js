@@ -6,6 +6,8 @@ import History from "./utils/history";
 import Board from "./components/Board";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Help from "./components/Help";
+
 import "./App.scss";
 
 class App extends Component {
@@ -17,6 +19,7 @@ class App extends Component {
     this.history = new History(create2DMatrix(rows, cols));
     this.state = {
       isMenuVisible: true,
+      isHelpModalVisible: false,
       genCount: 0,
       interval: 500,
       running: false,
@@ -32,9 +35,7 @@ class App extends Component {
     Mousetrap.bind("down", app.decreaseInterval);
     Mousetrap.bind("left", app.stepBackward);
     Mousetrap.bind("right", app.stepForward);
-    Mousetrap.bind("?", function () {
-      console.log(app.history);
-    });
+    Mousetrap.bind("?", app.toggleHelp, "keyup");
 
     window.onresize = debounce(app.handleresize, 500);
   }
@@ -48,11 +49,28 @@ class App extends Component {
     app.setState({ matrix: resized, genCount: 0 });
   };
 
+  toggleHelp = () => {
+    if (this.state.isHelpModalVisible) {
+      this.setState({
+        isHelpModalVisible: false,
+        isMenuVisible: true,
+      });
+    } else {
+      this.stop();
+      this.setState({
+        isHelpModalVisible: true,
+        isMenuVisible: false,
+      });
+    }
+  };
+
   toggleMenu = () => {
     const app = this;
-    requestAnimationFrame(() =>
-      app.setState({ isMenuVisible: !app.state.isMenuVisible })
-    );
+    if (!app.state.isHelpModalVisible) {
+      requestAnimationFrame(() =>
+        app.setState({ isMenuVisible: !app.state.isMenuVisible })
+      );
+    }
   };
 
   increaseInterval = () => {
@@ -118,7 +136,14 @@ class App extends Component {
   };
 
   render() {
-    const { interval, isMenuVisible, genCount, matrix, running } = this.state;
+    const {
+      interval,
+      isHelpModalVisible,
+      isMenuVisible,
+      genCount,
+      matrix,
+      running,
+    } = this.state;
     return (
       <div
         className="App"
@@ -127,6 +152,7 @@ class App extends Component {
           this.toggleMenu();
         }}
       >
+        <Help app={this} isHelpModalVisible={isHelpModalVisible} />
         <Header
           isMenuVisible={isMenuVisible}
           genCount={genCount}

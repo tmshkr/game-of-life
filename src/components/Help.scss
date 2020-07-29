@@ -1,0 +1,49 @@
+div#Help {
+  position: fixed;
+  z-index: 1;
+  background: #0d234aad;
+  padding: 2rem;
+  overflow: scroll;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.5s;
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  section {
+    text-align: center;
+    display: grid;
+    justify-content: center;
+    padding: 1rem 0;
+    ul {
+      text-align: left;
+    }
+    a {
+      color: cyan;
+    }
+  }
+
+  table {
+    margin: auto;
+  }
+  table,
+  th,
+  td {
+    border: 1px solid #d0d0d0;
+  }
+  td {
+    padding: 0.5rem;
+  }
+
+  svg {
+    margin-top: 3rem;
+    fill: #fff;
+    height: 2rem;
+  }
+}

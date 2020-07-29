@@ -13,7 +13,7 @@ function Footer(props) {
 
   return (
     <footer className={isMenuVisible ? "" : "hidden"}>
-      <HelpButton />
+      <HelpButton onClick={app.toggleHelp} />
       <div className="controls">
         <BackButton onClick={app.stepBackward} />
         {running ? (
