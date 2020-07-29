@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Mousetrap from "mousetrap";
 import { debounce } from "lodash";
-import { create2DMatrix, getNextGen, clone, resize } from "./utils/matrix";
+import { create2DMatrix, getNextGen, resize } from "./utils/matrix";
 import History from "./utils/history";
 import Board from "./components/Board";
 import Header from "./components/Header";
