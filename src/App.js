@@ -74,13 +74,15 @@ class App extends Component {
   };
 
   increaseInterval = () => {
-    if (this.state.interval < 1000)
-      this.setState({ interval: this.state.interval + 10 });
+    let newInterval = this.state.interval + 10;
+    if (newInterval > 1000) newInterval = 1000;
+    this.setState({ interval: newInterval });
   };
 
   decreaseInterval = () => {
-    if (this.state.interval > 50)
-      this.setState({ interval: this.state.interval - 10 });
+    let newInterval = this.state.interval - 10;
+    if (newInterval < 50) newInterval = 50;
+    this.setState({ interval: newInterval });
   };
 
   toggleSimulation = () => {
