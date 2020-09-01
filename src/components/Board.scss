@@ -4,11 +4,11 @@
   display: grid;
   &.active {
     span {
-      border: 1px solid #555;
+      border: 1px solid #00695c;
     }
   }
   span {
-    border: 1px solid #666;
+    border: 1px solid #004d40;
     // transition: background-color 0.33s;
     // will-change: background-color;
 
